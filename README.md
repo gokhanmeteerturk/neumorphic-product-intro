@@ -1,5 +1,12 @@
 # neumorphic-product-intro
-Product intro generator based on ES6 classes, shadow dom, Neumorphism and no-dependency pure JS.
+Product intro generator based on:
+- ES6 classes
+- Shadow DOM v1 
+- Neumorphism design trend
+- No-dependency pure JS.
+
+![gokhanmeteerturk](https://user-images.githubusercontent.com/92143124/149730624-c549414a-e600-4466-ae8e-c261288e9da7.gif)
+
 
 ### Browser Support
 
