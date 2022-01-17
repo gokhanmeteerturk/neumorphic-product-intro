@@ -1,4 +1,8 @@
 # neumorphic-product-intro
+![Version](https://img.shields.io/badge/Version-v1.0.0-yellow) 
+![repo](https://img.shields.io/badge/Status-Active-success)
+![ES](https://img.shields.io/badge/JavaScript%20Version-ES%206-blue)
+
 Product intro generator based on:
 - ES6 classes
 - Shadow DOM v1 
