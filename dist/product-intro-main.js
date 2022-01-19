@@ -2,7 +2,7 @@ var tut_css=`.product-intro-inner-container{font-size:16px;position:absolute;dis
 
 class ProductIntro{
     constructor(settings={steps:[], finishButtonText:"Finish", skipButtonText:"Finish"}){
-        
+
         if(!settings.hasOwnProperty('finishButtonText')){
             settings.finishButtonText = "Finish";
         }
@@ -18,7 +18,7 @@ class ProductIntro{
         this.productintroshadowroot.id="productintroshadowroot";
     }
     start(){
-        console.log(this.productintrodom);
+        // console.log(this.productintrodom);
         this.productintrodom.id="product-intro-dom";
         document.body.appendChild(this.productintrodom);
         let shadowPot = this.productintrodom.attachShadow({mode: 'open'});
@@ -28,7 +28,7 @@ class ProductIntro{
         let stylesheet = document.createElement('link');
         stylesheet.setAttribute('rel', 'stylesheet');
         stylesheet.setAttribute('href', 'product-intro.css');
-		
+
         shadowPot.appendChild(stylesheet);
 */
         if(this._steps.length>=1){
@@ -40,7 +40,7 @@ class ProductIntro{
     _scrollTo(el){
         let viewportObj = this._getRealViewportValues();
         let vh = viewportObj.vh;
-    
+
         let ePos = this._elPositions(el);
         if(ePos.top + ePos.height > vh+window.scrollY || window.scrollY > ePos.top){
             window.scrollTo({
@@ -70,7 +70,7 @@ class ProductIntro{
         }
 
     }
-    
+
     _tutUpdate(el,x){
         var cVal=this._getCircleValues(x);
         this._circleThis(x);
@@ -98,12 +98,12 @@ class ProductIntro{
         var title= currentStep.title;
         var content = currentStep.content;
         var cVal = currentStep.circleValues;
-        
+
         var oldContainer = this.productintroshadowroot.querySelector('#product-intro-main-container');
         if(oldContainer){
             this.productintroshadowroot.removeChild(oldContainer);
         }
-        
+
         var messageElement = document.createElement('DIV');
         messageElement.className='product-intro-inner-container';
         messageElement.id="product-intro-main-container";
@@ -166,6 +166,8 @@ class ProductIntro{
             }
         });
         this.productintroshadowroot.setAttribute('pr-resizeSet', 'true');
+
+       //this._tutUpdate(messageElement, currentStep.element);
     }
     _removeWindowListeners(){
         if(this.productintroshadowroot.hasAttribute('pr-resizeSet')){
@@ -176,30 +178,30 @@ class ProductIntro{
         }
     }
     _circleThis(el){
-    
         var viewportObj = this._getViewportValues();
         var vw = viewportObj.vw;
         var vh = viewportObj.vh;
-    
+
         var circleValues = this._getCircleValues(el);
-    
+
+
         var centerAtX= this._floatTwo(100*circleValues.x/vw); // center x position as a percentage of the viewport width;
         var centerAtY= this._floatTwo(100*circleValues.y/vh); // center y position as a percentage of the viewport height;
-        
+
         var svgW=vw;
         var svgH=vh;
-    
+
         var circleOuterD=circleValues.diameter + 16;
         var circleOuterR=circleOuterD / 2;
         var circleOuterT=circleValues.y - circleOuterR;
         var circleOuterL=circleValues.x - circleOuterR;
-    
+
         var pathD=`M 0 0 H ${svgW} V ${svgH} H 0 L 0 0 M ${circleValues.x} ${circleValues.y} m -${circleValues.radius}, 0 a ${circleValues.radius},${circleValues.radius} 0 1,0 ${circleValues.diameter},0 a ${circleValues.radius},${circleValues.radius} 0 1,0 -${circleValues.diameter},0`;
-    
+
         var path2D=`M ${circleOuterR} ${circleOuterR} m -${circleValues.radius}, 0 a ${circleValues.radius},${circleValues.radius} 0 1,0 ${circleValues.diameter},0 a ${circleValues.radius},${circleValues.radius} 0 1,0 -${circleValues.diameter},0`;
-    
+
         var path2D="M" + circleOuterR + "," + circleOuterR + "m" + (circleOuterR) + ",0" + "a" + circleOuterR + "," + circleOuterR + " 0 1,1 " + (-circleOuterR * 2) + ",0" + "a" + circleOuterR + "," + circleOuterR + " 0 1,1 " + (circleOuterR * 2) + ",0";
-        
+
         var svg = `
         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 ${svgW} ${svgH}">
             <defs>
@@ -208,7 +210,7 @@ class ProductIntro{
                 </clipPath>
             </defs>
         </svg>`;
-    
+
         var svg2 = `
         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 ${circleOuterD} ${circleOuterD}">
             <defs>
@@ -217,28 +219,34 @@ class ProductIntro{
                 </clipPath>
             </defs>
         </svg>`;
+
         var svgcontainer = this.productintroshadowroot.querySelector('#svgcontainer');
         if(!svgcontainer){
             var svgcontainer = document.createElement('DIV');
             svgcontainer.id="svgcontainer";
-            svgcontainer.style='position:absolute;width:1px;height:1px;overflow:hidden;z-index:-2;opacity:0;';
+            svgcontainer.style='position:fixed;top:-1;left:-1;width:1px;height:1px;overflow:hidden;z-index:-2;opacity:0;';
+
             this.productintroshadowroot.appendChild(svgcontainer);
+
         }
         svgcontainer.innerHTML=svg + svg2;
-    
+
         var over = this.productintroshadowroot.querySelector('#product-intro-over');
         if(over){
             this.productintroshadowroot.removeChild(over);
         }
         var over = document.createElement('DIV');
         over.id="product-intro-over";
-        over.style=`position:absolute;top:0;left:0;z-index:9996;width:${vw}px;height:${vh}px;background:#fff;background: radial-gradient(ellipse at ${centerAtX}% ${centerAtY}%, rgba(224,224,224,0.85) 20%, rgba(224,224,224,0.2) 100%);clip-path:url(#clip2);pointer-events:painted;`;
+        over.style=`position:absolute;top:0;left:0;z-index:9996;width:${vw-1}px;height:${vh-1}px;background:#fff;background: radial-gradient(ellipse at ${centerAtX}% ${centerAtY}%, rgba(224,224,224,0.85) 20%, rgba(224,224,224,0.2) 100%);clip-path:url(#clip2);pointer-events:painted;`;
+
         document.documentElement.style.setProperty("--overaftertop", circleOuterT+"px");
         document.documentElement.style.setProperty("--overafterleft", circleOuterL+"px");
         document.documentElement.style.setProperty("--overafterwidth", circleOuterD+"px");
         document.documentElement.style.setProperty("--overafterheight", circleOuterD+"px");
-        
+
+
         this.productintroshadowroot.appendChild(over);
+
         return circleValues;
     }
 
@@ -246,13 +254,13 @@ class ProductIntro{
         var viewportObj = this._getViewportValues();
         var vw = viewportObj.vw;
         var vh = viewportObj.vh;
-    
+
         var circleValues = {}
         var ePos=this._elPositions(el);
-    
+
         circleValues.diameter=ePos.diameter + 20; // pixels
         circleValues.radius= circleValues.diameter/2;
-    
+
         circleValues.x=ePos.left + ePos.width/2; // pixels, CENTER!
         circleValues.y=ePos.top + ePos.height/2; // pixels, CENTER!
         circleValues.spaceAtLeft =circleValues.x - circleValues.radius;
@@ -279,27 +287,27 @@ class ProductIntro{
         if(cVal.y <= vh/2){
             preferredVerticalPosition = "end";
         }
-    
+
         this._setStart(messageElement, mPos.width, vw, cVal.spaceAtLeft - 10, cVal.spaceAtRight - 10, "horizontal", preferredHorizontalPosition);
         this._setStart(messageElement, mPos.height, vh, cVal.spaceAtTop - 10, cVal.spaceAtBottom - 10, "vertical", preferredVerticalPosition);
-    
+
     }
 
     _elPositions(el){
         var elViewportOffset = el.getBoundingClientRect();
         var elPositionsObj={}
-        
+
         elPositionsObj.top = this._floatTwo(this._getTop(el));
         elPositionsObj.left = this._floatTwo(this._getLeft(el));
         elPositionsObj.bottom = this._floatTwo(document.body.scrollHeight - elPositionsObj.top - elViewportOffset.height);
         elPositionsObj.right = this._floatTwo(document.body.scrollWidth - elPositionsObj.left - elViewportOffset.width);
-    
+
         elPositionsObj.width = elViewportOffset.width;
         elPositionsObj.height = elViewportOffset.height;
-    
+
         elPositionsObj.diameter = this._floatTwo(Math.sqrt((elPositionsObj.width*elPositionsObj.width)+(elPositionsObj.height*elPositionsObj.height)));
-    
-    
+
+
         return elPositionsObj;
     }
 
@@ -308,7 +316,8 @@ class ProductIntro{
     }
 
     _getLeft(el){
-        return el.offsetLeft + (el.offsetParent && this._getTop(el.offsetParent));
+
+        return el.offsetLeft + (el.offsetParent && this._getLeft(el.offsetParent));
     }
 
     _setStart(messageElement, messageSize, vs, startSpace, endSpace, direction, preferredPosition){
@@ -317,16 +326,16 @@ class ProductIntro{
             startScroll = window.scrollY;
             bodyScrollSize = document.body.scrollHeight;
         }
-    
+
         var startValue=0;
         var startScroll = window.scrollX;
         if(direction=="vertical"){
             startScroll = window.scrollY;
         }
-    
+
         endSpace = vs + startScroll - bodyScrollSize + endSpace;
-    
-        
+
+
         if(preferredPosition == "start"){
             if(startSpace - startScroll > messageSize){
                 startValue=startSpace - messageSize;
@@ -364,7 +373,7 @@ class ProductIntro{
         var viewportObj={vw:parseFloat(document.body.scrollWidth), vh:parseFloat(document.body.scrollHeight)};
         return viewportObj;
     }
-    
+
 
 
 }
