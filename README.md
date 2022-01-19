@@ -1,5 +1,5 @@
 # neumorphic-product-intro
-![Version](https://img.shields.io/badge/Version-v1.0.0-yellow) 
+![Version](https://img.shields.io/badge/Version-v1.0.1-yellow) 
 ![repo](https://img.shields.io/badge/Status-Active-success)
 ![ES](https://img.shields.io/badge/JavaScript%20Version-ES%206-blue)
 
@@ -23,7 +23,7 @@ Product intro generator based on:
 Download the js file from dist folder <b>or just use a CDN instead</b>:
 
 ```HTML+ECR
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/gokhanmeteerturk/neumorphic-product-intro@v1.0.0/dist/product-intro-main.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/gokhanmeteerturk/neumorphic-product-intro@v1.0.1/dist/product-intro-main.js"></script>
 ```
 
 Css code is placed dynamically in a shadow root, so you don't need to link a css file. 
